@@ -2,13 +2,13 @@
 
 <%= form_with model: @post, url: posts_path, method: :post, local: true do |f| %>
   <div>
-    <%= f.label :name, "Nome do Post" %>
-    <%= f.text_field :name, required: true %>
+    <%= f.label :title, "Título" %>
+    <%= f.text_field :title, required: true %>
   </div>
 
   <div>
-    <%= f.label :title, "Título" %>
-    <%= f.text_field :title, required: true %>
+    <%= f.label :content, "conteudo" %>
+    <%= f.text_field :content, required: true %>
   </div>
 
   <div>
@@ -19,7 +19,7 @@
 <ul>
   <% @posts.each do |post| %>
     <li>
-      <strong><%= post.name %></strong> - <%= post.title %> (por <%= post.user.name %>)
+      <strong><%= post.title %></strong> - <%= post.content %> (por <%= post.user.name %>)
       <small>Data: <%= post.date.strftime("%d/%m/%Y %H:%M") %></small>
       <small>Likes: <%= post.likes.count %></small>
 
