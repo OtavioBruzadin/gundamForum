@@ -1,0 +1,24 @@
+<h2>Posts Recentes</h2>
+
+<%= link_to "Criar Novo Post", new_post_path, class: "btn btn-primary" %>
+
+<ul>
+  <% if @posts.any? %>
+    <% @posts.each do |post| %>
+      <li>
+        <h3><%= post.title %></h3>
+        <p><%= post.content.truncate(200) %></p>
+        <small>Por <%= post.user.name if post.user %> - <%= post.date.strftime("%d/%m/%Y %H:%M") %></small>
+        <small>Likes: <%= post.likes.count %></small>
+
+        <% unless post.likes.exists?(user: current_user) %>
+          <%= button_to "👍 Curtir", like_post_path(post), method: :patch, class: "like-button" %>
+        <% else %>
+          <span>✅ Você já curtiu</span>
+        <% end %>
+      </li>
+    <% end %>
+  <% else %>
+    <p>Nenhum post encontrado.</p>
+  <% end %>
+</ul>

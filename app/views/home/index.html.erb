@@ -1,0 +1,41 @@
+<h2>Criar um novo post</h2>
+
+<%= form_with model: @post, url: posts_path, method: :post, local: true do |f| %>
+  <div>
+    <%= f.label :name, "Nome do Post" %>
+    <%= f.text_field :name, required: true %>
+  </div>
+
+  <div>
+    <%= f.label :title, "Título" %>
+    <%= f.text_field :title, required: true %>
+  </div>
+
+  <div>
+    <%= f.submit "Criar Post" %>
+  </div>
+<% end %>
+
+<ul>
+  <% @posts.each do |post| %>
+    <li>
+      <strong><%= post.name %></strong> - <%= post.title %> (por <%= post.user.name %>)
+      <small>Data: <%= post.date.strftime("%d/%m/%Y %H:%M") %></small>
+      <small>Likes: <%= post.likes.count %></small>
+
+      <% unless post.likes.exists?(user: current_user) %>
+        <%= button_to "👍 Curtir", like_post_path(post), method: :patch, class: "like-button" %>
+    <% else %>
+        <span>✅ Você já curtiu</span>
+      <% end %>
+    </li>
+  <% end %>
+
+  <% if user_signed_in? %>
+    <p>Bem-vindo, <%= current_user.name %>!</p>
+    <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+  <% else %>
+    <%= link_to "Login", new_user_session_path, class: "btn btn-primary" %>
+  <% end %>
+</ul>
+
