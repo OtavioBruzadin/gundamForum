@@ -1,5 +1,5 @@
 <h2>Criar um novo post</h2>
-
+<%= javascript_include_tag "application", "data-turbo-track": "reload" %>
 <%= form_with model: @post, url: posts_path, method: :post, local: true do |f| %>
   <div>
     <%= f.label :title, "Título" %>
@@ -23,11 +23,13 @@
       <small>Data: <%= post.date.strftime("%d/%m/%Y %H:%M") %></small>
       <small>Likes: <%= post.likes.count %></small>
 
-      <% unless post.likes.exists?(user: current_user) %>
-        <%= button_to "👍 Curtir", like_post_path(post), method: :patch, class: "like-button" %>
-    <% else %>
-        <span>✅ Você já curtiu</span>
-      <% end %>
+
+        <% if post.likes.exists?(user: current_user) %>
+          <%= button_to "👎 Descurtir", like_post_path(post), method: :patch, data: { turbo: false }, class: "btn btn-warning" %>
+        <% else %>
+          <%= button_to "👍 Curtir", like_post_path(post), method: :patch, data: { turbo: false }, class: "btn btn-success" %>
+        <% end %>
+
     </li>
   <% end %>
 
