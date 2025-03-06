@@ -42,6 +42,15 @@ class PostsController < ApplicationController
     end
   end
 
+  class PostsController < ApplicationController
+    before_action :authenticate_user!, except: [:index, :show]
+
+    def show
+      @post = Post.find(params[:id])
+      @comments = @post.comments.order(created_at: :asc)
+    end
+  end
+
   private
   def post_params
     params.require(:post).permit(:title, :content)

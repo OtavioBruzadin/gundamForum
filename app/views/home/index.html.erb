@@ -18,6 +18,33 @@
         <% end %>
 
     </li>
+
+    <h3>Comentários</h3>
+
+    <ul>
+      <% post.comments.each do |comment| %>
+        <li>
+          <strong><%= comment.user.name %>:</strong>
+          <%= comment.content %>
+          <small>(<%= comment.created_at.strftime("%d/%m/%Y %H:%M") %>)</small>
+        </li>
+      <% end %>
+    </ul>
+
+    <!-- Formulário para Novo Comentário -->
+    <%= form_with model: [post, Comment.new], method: :post, data: { turbo: false } do |f| %>
+      <div>
+        <%= f.label :content, "Escreva um comentário:" %>
+        <%= f.text_area :content, required: true %>
+      </div>
+      <div>
+        <%= f.submit "Comentar", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+    <hr>
+    </div>
+
   <% end %>
 
   <% if user_signed_in? %>
@@ -27,4 +54,3 @@
     <%= link_to "Login", new_user_session_path, class: "btn btn-primary" %>
   <% end %>
 </ul>
-

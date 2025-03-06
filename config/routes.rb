@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     member do
       patch :like
     end
+    resources :comments, only: [:create] # Adiciona suporte a comentários nos posts
+
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

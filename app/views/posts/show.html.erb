@@ -1,0 +1,35 @@
+<h1><%= @post.title %></h1>
+<p><%= @post.content %></p>
+<p><small>Postado por: <%= @post.user.name %> em <%= @post.created_at.strftime("%d/%m/%Y %H:%M") %></small></p>
+
+<!-- Botão de Like -->
+<% if @post.likes.exists?(user: current_user) %>
+  <%= button_to "👎 Descurtir", like_post_path(@post), method: :patch, data: { turbo: false }, class: "btn btn-warning" %>
+<% else %>
+  <%= button_to "👍 Curtir", like_post_path(@post), method: :patch, data: { turbo: false }, class: "btn btn-success" %>
+<% end %>
+
+<hr>
+
+<h2>Comentários</h2>
+
+<%= form_with model: [@post, Comment.new], local: true do |f| %>
+  <div>
+    <%= f.label :content, "Escreva um comentário:" %>
+    <%= f.text_area :content, required: true %>
+  </div>
+  <div>
+    <%= f.submit "Comentar", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<h3>Lista de Comentários:</h3>
+<ul>
+  <% @comments.each do |comment| %>
+    <li>
+      <strong><%= comment.user.name %>:</strong>
+      <%= comment.content %>
+      <small>(<%= comment.created_at.strftime("%d/%m/%Y %H:%M") %>)</small>
+    </li>
+  <% end %>
+</ul>
