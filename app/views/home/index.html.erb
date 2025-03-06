@@ -19,7 +19,7 @@
 <ul>
   <% @posts.each do |post| %>
     <li>
-      <strong><%= post.title %></strong> - <%= post.content %> (por <%= post.user.name %>)
+      <strong><%= post.title %></strong> - <%= post.content %> (por <%= link_to post.user.name, user_path(post.user) %>)
       <small>Data: <%= post.date.strftime("%d/%m/%Y %H:%M") %></small>
       <small>Likes: <%= post.likes.count %></small>
 

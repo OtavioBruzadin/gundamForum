@@ -1,0 +1,16 @@
+<h1><%= @user.name %></h1>
+
+<h2>Publicações de <%= @user.name %>:</h2>
+<% @posts.each do |post| %>
+  <div class="post">
+    <h3><%= post.title %></h3>
+    <p><%= post.content %></p>
+    <p><small>Publicado em <%= post.created_at.strftime("%d/%m/%Y %H:%M") %></small></p>
+    <% if post.likes.exists?(user: current_user) %>
+      <%= button_to "👎 Descurtir", like_post_path(post), method: :patch, data: { turbo: false }, class: "btn btn-warning" %>
+    <% else %>
+      <%= button_to "👍 Curtir", like_post_path(post), method: :patch, data: { turbo: false }, class: "btn btn-success" %>
+    <% end %>
+  </div>
+  <hr>
+<% end %>

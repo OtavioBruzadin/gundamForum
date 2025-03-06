@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get "home/index"
   devise_for :users
   root to: "home#index"
+  resources :users, only: [:show]
   resources :posts, only: [:index, :new, :create] do
     member do
       patch :like
