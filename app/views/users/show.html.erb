@@ -1,6 +1,30 @@
 <h1><%= @user.name %></h1>
 
 <h2>Publicações de <%= @user.name %>:</h2>
+
+
+  <% if user_signed_in? && current_user != @user %>
+    <% if current_user.following?(@user) %>
+      <%= button_to "- Parar de Seguir", unfollow_user_path(@user), method: :delete, data: { turbo: false }, class: "btn btn-danger" %>
+    <% else %>
+      <%= button_to "+ Seguir", follow_user_path(@user), method: :post, data: { turbo: false }, class: "btn btn-primary" %>
+    <% end %>
+  <% end %>
+
+  <p><strong>Seguidores:</strong> <%= @user.followers.count %></p>
+
+<ul>
+  <% @user.followers.each do |follower| %>
+    <li><%= link_to follower.name, user_path(follower) %></li>
+  <% end %>
+</ul>
+
+<h3>Seguindo: <%= @user.following.count %></h3>
+<ul>
+  <% @user.following.each do |followed| %>
+    <li><%= link_to followed.name, user_path(followed) %></li>
+  <% end %>
+</ul>
 <% @posts.each do |post| %>
   <div class="post">
     <h3><%= post.title %></h3>

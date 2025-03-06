@@ -1,21 +1,8 @@
 <h2>Criar um novo post</h2>
 <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
-<%= form_with model: @post, url: posts_path, method: :post, local: true do |f| %>
-  <div>
-    <%= f.label :title, "Título" %>
-    <%= f.text_field :title, required: true %>
-  </div>
 
-  <div>
-    <%= f.label :content, "conteudo" %>
-    <%= f.text_field :content, required: true %>
-  </div>
-
-  <div>
-    <%= f.submit "Criar Post" %>
-  </div>
-<% end %>
-
+<%= link_to "Criar Post", new_post_path, class: "btn btn-primary" %>
+<li><%= link_to "Meu Perfil", user_path(current_user) %></li>
 <ul>
   <% @posts.each do |post| %>
     <li>
