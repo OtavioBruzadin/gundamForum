@@ -9,8 +9,12 @@
       <li>
         <strong><%= post.title %> (por <%= link_to post.user.name, user_path(post.user) %>)</strong> <small>Data: <%= post.date.strftime("%d/%m/%Y %H:%M") %></small>
         <br>
-        <% if post.image.attached? %>
-          <%= image_tag post.image, size: "300x200" %>
+        <% if post.images.attached? %>
+          <div class="image-gallery">
+            <% post.images.each do |image| %>
+              <%= image_tag image, class: "post-image", size: "300x200" %>
+            <% end %>
+          </div>
         <% end %>
         <br>
         <%= post.content %>
