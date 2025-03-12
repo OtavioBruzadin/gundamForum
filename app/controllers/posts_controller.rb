@@ -36,10 +36,7 @@ class PostsController < ApplicationController
       @post.likes.create(user: current_user)
     end
 
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to request.referer || root_path }
-    end
+    redirect_to request.referer + "#post-#{@post.id}"
   end
 
   class PostsController < ApplicationController
@@ -53,6 +50,6 @@ class PostsController < ApplicationController
 
   private
   def post_params
-    params.require(:post).permit(:title, :content)
+    params.require(:post).permit(:title, :content, :image)
   end
 end

@@ -1,56 +1,50 @@
-<h2>Criar um novo post</h2>
 <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
 
 <%= link_to "Criar Post", new_post_path, class: "btn btn-primary" %>
-<li><%= link_to "Meu Perfil", user_path(current_user) %></li>
+<%= link_to "Meu Perfil", user_path(current_user) %>
+
 <ul>
   <% @posts.each do |post| %>
-    <li>
-      <strong><%= post.title %></strong> - <%= post.content %> (por <%= link_to post.user.name, user_path(post.user) %>)
-      <small>Data: <%= post.date.strftime("%d/%m/%Y %H:%M") %></small>
-      <small>Likes: <%= post.likes.count %></small>
-
+    <div class="post" id="post-<%= post.id %>">
+      <li>
+        <strong><%= post.title %> (por <%= link_to post.user.name, user_path(post.user) %>)</strong> <small>Data: <%= post.date.strftime("%d/%m/%Y %H:%M") %></small>
+        <br>
+        <% if post.image.attached? %>
+          <%= image_tag post.image, size: "300x200" %>
+        <% end %>
+        <br>
+        <%= post.content %>
+        <small>Likes: <%= post.likes.count %></small>
 
         <% if post.likes.exists?(user: current_user) %>
           <%= button_to "👎 Descurtir", like_post_path(post), method: :patch, data: { turbo: false }, class: "btn btn-warning" %>
         <% else %>
           <%= button_to "👍 Curtir", like_post_path(post), method: :patch, data: { turbo: false }, class: "btn btn-success" %>
         <% end %>
+      </li>
 
-    </li>
+      <ul>
+        <% post.comments.each do |comment| %>
+          <li>
+            <strong><%= comment.user.name %>:</strong>
+            <%= comment.content %>
+            <small>(<%= comment.created_at.strftime("%d/%m/%Y %H:%M") %>)</small>
+          </li>
+        <% end %>
+      </ul>
 
-    <h3>Comentários</h3>
-
-    <ul>
-      <% post.comments.each do |comment| %>
-        <li>
-          <strong><%= comment.user.name %>:</strong>
-          <%= comment.content %>
-          <small>(<%= comment.created_at.strftime("%d/%m/%Y %H:%M") %>)</small>
-        </li>
+      <%= form_with model: [post, Comment.new], method: :post, data: { turbo: false }, html: { class: "comment-form" } do |f| %>
+        <div>
+          <%= f.text_area :content, required: true %>
+        </div>
+        <div>
+          <%= f.submit "Comentar", class: "btn btn-primary" %>
+        </div>
       <% end %>
-    </ul>
 
-    <!-- Formulário para Novo Comentário -->
-    <%= form_with model: [post, Comment.new], method: :post, data: { turbo: false } do |f| %>
-      <div>
-        <%= f.label :content, "Escreva um comentário:" %>
-        <%= f.text_area :content, required: true %>
-      </div>
-      <div>
-        <%= f.submit "Comentar", class: "btn btn-primary" %>
-      </div>
-    <% end %>
-
-    <hr>
+      <hr>
     </div>
-
   <% end %>
 
-  <% if user_signed_in? %>
-    <p>Bem-vindo, <%= current_user.name %>!</p>
-    <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
-  <% else %>
-    <%= link_to "Login", new_user_session_path, class: "btn btn-primary" %>
-  <% end %>
 </ul>
+

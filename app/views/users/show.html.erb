@@ -1,8 +1,5 @@
 <h1><%= @user.name %></h1>
 
-<h2>Publicações de <%= @user.name %>:</h2>
-
-
   <% if user_signed_in? && current_user != @user %>
     <% if current_user.following?(@user) %>
       <%= button_to "- Parar de Seguir", unfollow_user_path(@user), method: :delete, data: { turbo: false }, class: "btn btn-danger" %>
@@ -26,8 +23,13 @@
   <% end %>
 </ul>
 <% @posts.each do |post| %>
+  <hr>
   <div class="post">
-    <h3><%= post.title %></h3>
+    <strong><%= post.title %></strong> <small>Publicado em <%= post.created_at.strftime("%d/%m/%Y %H:%M") %></small>
+    <br>
+    <% if post.image.attached? %>
+      <%= image_tag post.image, size: "300x200" %>
+    <% end %>
     <p><%= post.content %></p>
     <p><small>Publicado em <%= post.created_at.strftime("%d/%m/%Y %H:%M") %></small></p>
     <% if post.likes.exists?(user: current_user) %>
@@ -36,9 +38,6 @@
       <%= button_to "👍 Curtir", like_post_path(post), method: :patch, data: { turbo: false }, class: "btn btn-success" %>
     <% end %>
   </div>
-  <hr>
-
-  <h3>Comentários</h3>
 
   <ul>
     <% post.comments.each do |comment| %>
@@ -50,7 +49,6 @@
     <% end %>
   </ul>
 
-  <!-- Formulário para Novo Comentário -->
   <%= form_with model: [post, Comment.new], method: :post, data: { turbo: false } do |f| %>
     <div>
       <%= f.text_area :content, required: true %>
@@ -58,5 +56,6 @@
     <div>
       <%= f.submit "Comentar", class: "btn btn-primary" %>
     </div>
+    <hr>
   <% end %>
 <% end %>

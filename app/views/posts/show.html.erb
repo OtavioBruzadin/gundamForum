@@ -1,5 +1,8 @@
 <h1><%= @post.title %></h1>
 <p><%= @post.content %></p>
+<% if @post.image.attached? %>
+  <%= image_tag @post.image, class: "post-image", size: "500x300" %>
+<% end %>
 <p><small>Postado por: <%= @post.user.name %> em <%= @post.created_at.strftime("%d/%m/%Y %H:%M") %></small></p>
 
 <!-- Botão de Like -->
