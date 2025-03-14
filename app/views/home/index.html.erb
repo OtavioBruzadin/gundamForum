@@ -1,8 +1,5 @@
 <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
 
-<%= link_to "Criar Post", new_post_path, class: "btn btn-primary" %>
-<%= link_to "Meu Perfil", user_path(current_user) %>
-
 <ul>
   <% @posts.each do |post| %>
     <div class="post" id="post-<%= post.id %>">
@@ -30,7 +27,7 @@
       <ul>
         <% post.comments.each do |comment| %>
           <li>
-            <strong><%= comment.user.name %>:</strong>
+            <strong><%= link_to comment.user.name , user_path(comment.user) %>:</strong>
             <%= comment.content %>
             <small>(<%= comment.created_at.strftime("%d/%m/%Y %H:%M") %>)</small>
           </li>
