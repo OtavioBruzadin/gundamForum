@@ -14,8 +14,8 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params)
     @post.date = Time.current
-    @post.author = current_user.name # Define o usuário como autor
-    @post.likes ||= 0 # Garante que likes começa em 0
+    @post.author = current_user.name
+    @post.likes ||= 0
 
     if @post.save
       flash[:notice] = "Post criado com sucesso!"
