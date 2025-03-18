@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             window.scrollTo(0, localStorage.getItem("scrollPosition"));
             localStorage.removeItem("scrollPosition");
-        }, 10); e
+        }, 10);
     }
 
     function salvarScrollAntesDeEnviar() {
